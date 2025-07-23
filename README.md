@@ -12,6 +12,8 @@ If n8n-heygen-official in some folder "/home/username/projects/n8n-heygen-node" 
 
 6. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
 
+Important: Some of lint errors do not follow logic, so we can skip them.
+
 # Publish
 
 7. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
