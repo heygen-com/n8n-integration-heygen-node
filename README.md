@@ -1,9 +1,9 @@
 # Local development
 
-If n8n-heygen-official in some folder "/home/username/projects/n8n-heygen-node" after changing code of this node, we need:
+If n8n-nodes-heygen-official in some folder "/home/username/projects/n8n-heygen-node" after changing code of this node, we need:
 
 1. In this folder run `npm run build && npm link`
-2. Go to global n8n folder and sub-folder "custom" (for example: ~/.n8n/custom) and from this folder run `npm link n8n-heygen-official` where "n8n-heygen-official" is name of this package (in package.json)
+2. Go to global n8n folder and sub-folder "custom" (for example: ~/.n8n/custom) and from this folder run `npm link n8n-nodes-heygen-official` where "n8n-nodes-heygen-official" is name of this package (in package.json)
 3. Run `n8n start` to start local n8n server
 4. Now we should be able to find HeyGen node
 5. Link operations need to be done only one time, then after changes in code, just run `npm run build` and then `n8n start` to see changes
