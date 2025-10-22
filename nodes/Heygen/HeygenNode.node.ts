@@ -106,45 +106,45 @@ export class HeygenNode implements INodeType {
 
 				if (operation === 'createAvatarVideo') {
 					const response = await createAvatarVideoApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 				if (operation === 'createTemplateVideo') {
 					const response = await createTemplateVideoApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 				if (operation === 'getVideoStatus') {
 					const response = await getVideoStatusApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 				// common operations
 
 				if (operation === 'listAvatars') {
 					const response = await getAvatarsListApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 				if (operation === 'listAvatarsGroups') {
 					const response = await getAvatarsGroupsListApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 				if (operation === 'listVoices') {
 					const response = await getVoiceListApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 
 				if (operation === 'uploadAssets') {
 					const response = await uploadFileApi.call(this, i);
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
 			} catch (error) {
                 if (this.continueOnFail()) {
-                    returnData.push({ json: { error: error.message } });
+                    returnData.push({ json: { error: error.message }, pairedItem: { item: i } });
                     continue;
                 }
                 throw error;

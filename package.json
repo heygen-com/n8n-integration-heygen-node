@@ -36,7 +36,7 @@
       "dist/credentials/HeyGenApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/HeygenNode/HeygenNode.node.js"
+      "dist/nodes/Heygen/HeygenNode.node.js"
     ]
   },
   "devDependencies": {
@@ -51,7 +51,5 @@
   "peerDependencies": {
     "n8n-workflow": "*"
   },
-  "dependencies": {
-    "i": "^0.3.7"
-  }
+  "dependencies": {}
 }

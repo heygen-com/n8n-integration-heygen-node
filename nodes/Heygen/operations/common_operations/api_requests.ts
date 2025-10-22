@@ -1,4 +1,4 @@
-import type { IExecuteFunctions } from 'n8n-workflow';
+import type { IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 import type { IDataObject } from 'n8n-workflow';
 import { heyGenApiRequest } from '../../shared/shared_functions'; 
@@ -102,25 +102,43 @@ export async function uploadFileApi(
 				throw new NodeOperationError(this.getNode(), 'File URL is required!');
 			}
 
-			// For URL-based uploads, we'll need to fetch the file first and then upload it
-			const fileResponse = await this.helpers.request({
+			const getRes = await this.helpers.httpRequest({
 				method: 'GET',
-				uri: fileUrl,
-				encoding: null, // Return body as Buffer
-			});
+				url: fileUrl,              // use `url` (not `uri`)
+				encoding: 'arraybuffer',   // binary body
+				json: false,
+				returnFullResponse: true,  // get headers + body
+			} as IHttpRequestOptions);
 
-			// Determine MIME type from URL (simple approach)
-			let mimeType = 'application/octet-stream';
-			if (fileUrl.endsWith('.jpg') || fileUrl.endsWith('.jpeg')) {
-				mimeType = 'image/jpeg';
-			} else if (fileUrl.endsWith('.png')) {
-				mimeType = 'image/png';
-			} else if (fileUrl.endsWith('.mp4')) {
-				mimeType = 'video/mp4';
-			} else if (fileUrl.endsWith('.webm')) {
-				mimeType = 'video/webm';
-			} else if (fileUrl.endsWith('.mp3')) {
-				mimeType = 'audio/mpeg';
+			// Normalize body to Buffer
+			const fileBuffer: Buffer = Buffer.isBuffer(getRes.body)
+			? getRes.body
+			: Buffer.from(getRes.body as ArrayBuffer);
+
+			// Pull Content-Type if present
+			const headers = (getRes.headers ?? {}) as Record<string, string | string[]>;
+			const ct = (headers['content-type'] || headers['Content-Type']) as string | undefined;
+			let mimeType = ct ? ct.split(';')[0].trim() : '';
+
+			// filename from Content-Disposition
+			if (!mimeType) {
+				const cd = (headers['content-disposition'] || headers['Content-Disposition']) as string | undefined;
+				let filename: string | undefined;
+				if (cd) {
+					const m = /filename\*?=(?:UTF-8'')?["']?([^"';]+)["']?/i.exec(cd);
+					if (m?.[1]) filename = decodeURIComponent(m[1]);
+				}
+
+				// Fallback to URL path / extension
+				const nameSource = filename ?? (() => { try { return new URL(fileUrl).pathname; } catch { return fileUrl; } })();
+				const ext = (nameSource.match(/\.([A-Za-z0-9]+)$/)?.[1] || '').toLowerCase();
+				const map: Record<string, string> = {
+					jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif',
+					mp4: 'video/mp4', webm: 'video/webm', mov: 'video/quicktime', mkv: 'video/x-matroska',
+					mp3: 'audio/mpeg', wav: 'audio/wav', m4a: 'audio/mp4', ogg: 'audio/ogg',
+					pdf: 'application/pdf',
+				};
+				mimeType = map[ext] ?? 'application/octet-stream';
 			}
 
 			// Upload the file using binary mode
@@ -132,7 +150,7 @@ export async function uploadFileApi(
 				{},
 				{
 					binary: true,
-					binaryData: fileResponse,
+					binaryData: fileBuffer,
 					mimeType: mimeType,
 				}
 			);
