@@ -12,6 +12,6 @@ export const webhookProperties: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'This operation will handle callbacks from HeyGen. You must register webhook URL in HeyGen as: https://&lt;your-workspace-id&gt;.n8n.cloud/webhook/heygen',
+		description: 'This operation will handle callbacks from HeyGen. You must register webhook URL in HeyGen as: https://&lt;your-workspace-ID&gt;.n8n.cloud/webhook/heygen.',
 	},
 ];

@@ -4,7 +4,7 @@ import type { INodeProperties } from 'n8n-workflow';
 // in this file only specific for templates video generation
 export const createTemplateVideoDescription: INodeProperties[] = [
 	{
-		displayName: 'Template ID',
+		displayName: 'Template Name or ID',
 		name: 'templateIDOptions',
 		type: 'options',
 		typeOptions: {
@@ -16,10 +16,10 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose from the list',
+		description: 'Choose from the list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
-		displayName: 'Template ID (manual input)',
+		displayName: 'Template ID (Manual Input)',
 		name: 'templateIDString',
 		type: 'string',
 		displayOptions: {

@@ -1,7 +1,6 @@
-import type { INodeProperties } from 'n8n-workflow';
-//import { heyGenApiRequest } from '../../shared/shared_functions';
-//import { getAvatars } from './methods/getLists'
+/* eslint-disable n8n-nodes-base/node-param-description-boolean-without-whether */
 
+import type { INodeProperties } from 'n8n-workflow';
 
 
 export const createAvatarVideoDescription: INodeProperties[] = [
@@ -134,138 +133,31 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 				displayName: 'Video Input',
 				values: [
 					{
-						displayName: 'Character Type',
-						name: 'characterType',
-						type: 'options',
-						options: [
-							{
-								name: 'Avatar',
-								value: 'avatar',
-							},
-							{
-								name: 'Talking Photo',
-								value: 'talking_photo',
-							},
-						],
-						default: 'avatar',
-						description: 'Type of character to use in the video',
+						displayName: 'Audio URL',
+						name: 'audioUrl',
+						type: 'string',
+						default: '',
+						description: 'URL of the audio file to use',
 					},
 					{
 						displayName: 'Avatar ID',
 						name: 'avatarId',
 						type: 'string',
-						//typeOptions: {
-						//	loadOptionsMethod: 'getAvatars',
-						//},
-						displayOptions: {
-							show: {
-								characterType: ['avatar'],
-							},
-						},
 						default: '',
 					},
 					{
-						displayName: 'Talking Photo ID',
-						name: 'talkingPhotoId',
+						displayName: 'Background Color',
+						name: 'backgroundColor',
+						type: 'color',
+						default: '#f6f6fc',
+						description: 'Color to use as background (hex format)',
+					},
+					{
+						displayName: 'Background Image URL',
+						name: 'backgroundImageUrl',
 						type: 'string',
-						displayOptions: {
-							show: {
-								characterType: ['talking_photo'],
-							},
-						},
 						default: '',
-					},
-					{
-						displayName: 'Voice Type',
-						name: 'voiceType',
-						type: 'options',
-						options: [
-							{
-								name: 'Text',
-								value: 'text',
-							},
-							{
-								name: 'Audio',
-								value: 'audio',
-							},
-							{
-								name: 'Silence',
-								value: 'silence',
-							},
-						],
-						default: 'text',
-						description: 'Type of voice input for the character',
-					},
-					{
-						displayName: 'Voice ID',
-						name: 'voiceId',
-						type: 'string',
-						displayOptions: {
-							show: {
-								voiceType: ['text'],
-							},
-						},
-						default: '',
-						description: 'Voice ID to use for text-to-speech',
-					},
-					{
-						displayName: 'Input Text',
-						name: 'inputText',
-						type: 'string',
-						typeOptions: {
-							rows: 4,
-						},
-						displayOptions: {
-							show: {
-								voiceType: ['text'],
-							},
-						},
-						default: '',
-						description: 'Text that the character will speak',
-					},
-					{
-						displayName: 'Voice Speed',
-						name: 'speed',
-						type: 'number',
-						typeOptions: {
-							minValue: 0.5,
-							maxValue: 1.5,
-						},
-						displayOptions: {
-							show: {
-								voiceType: ['text'],
-							},
-						},
-						default: 1,
-						description: 'Speed of the voice, between 0.5 and 1.5',
-					},
-					{
-						displayName: 'Audio URL',
-						name: 'audioUrl',
-						type: 'string',
-						displayOptions: {
-							show: {
-								voiceType: ['audio'],
-							},
-						},
-						default: '',
-						description: 'URL of the audio file to use',
-					},
-					{
-						displayName: 'Silence Duration',
-						name: 'duration',
-						type: 'number',
-						typeOptions: {
-							minValue: 1,
-							maxValue: 100,
-						},
-						displayOptions: {
-							show: {
-								voiceType: ['silence'],
-							},
-						},
-						default: 1,
-						description: 'Duration of silence in seconds (1-100)',
+						description: 'URL of the image to use as background',
 					},
 					{
 						displayName: 'Background Type',
@@ -289,42 +181,85 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 						description: 'Type of background to use',
 					},
 					{
-						displayName: 'Background Color',
-						name: 'backgroundColor',
-						type: 'color',
-						displayOptions: {
-							show: {
-								backgroundType: ['color'],
-							},
-						},
-						default: '#f6f6fc',
-						description: 'Color to use as background (hex format)',
-					},
-					{
-						displayName: 'Background Image URL',
-						name: 'backgroundImageUrl',
-						type: 'string',
-						displayOptions: {
-							show: {
-								backgroundType: ['image'],
-							},
-						},
-						default: '',
-						description: 'URL of the image to use as background',
-					},
-					{
 						displayName: 'Background Video URL',
 						name: 'backgroundVideoUrl',
 						type: 'string',
-						displayOptions: {
-							show: {
-								backgroundType: ['video'],
-							},
-						},
 						default: '',
 						description: 'URL of the video to use as background',
 					},
-				],
+					{
+						displayName: 'Character Type',
+						name: 'characterType',
+						type: 'options',
+						options: [
+							{
+								name: 'Avatar',
+								value: 'avatar',
+							},
+							{
+								name: 'Talking Photo',
+								value: 'talking_photo',
+							},
+					],
+						default: 'avatar',
+						description: 'Type of character to use in the video',
+					},
+					{
+						displayName: 'Input Text',
+						name: 'inputText',
+						type: 'string',
+						default: '',
+						description: 'Text that the character will speak',
+					},
+					{
+						displayName: 'Silence Duration',
+						name: 'duration',
+						type: 'number',
+						default: 1,
+						description: 'Duration of silence in seconds (1-100)',
+					},
+					{
+						displayName: 'Talking Photo ID',
+						name: 'talkingPhotoId',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Voice ID',
+						name: 'voiceId',
+						type: 'string',
+						default: '',
+						description: 'Voice ID to use for text-to-speech',
+					},
+					{
+						displayName: 'Voice Speed',
+						name: 'speed',
+						type: 'number',
+						default: 1,
+						description: 'Speed of the voice, between 0.5 and 1.5',
+					},
+					{
+						displayName: 'Voice Type',
+						name: 'voiceType',
+						type: 'options',
+						options: [
+							{
+								name: 'Text',
+								value: 'text',
+							},
+							{
+								name: 'Audio',
+								value: 'audio',
+							},
+							{
+								name: 'Silence',
+								value: 'silence',
+							},
+					],
+						default: 'text',
+						description: 'Type of voice input for the character',
+					},
+			],
 			},
 		],
 		description: 'Video input settings (scenes). Each input describes a scene in the video.',
