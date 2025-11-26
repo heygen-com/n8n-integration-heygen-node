@@ -47,7 +47,11 @@ export async function heyGenApiRequest(
 
     try {
 
-        const response = await this.helpers.request!(requestOptions);
+        const response = await this.helpers.httpRequestWithAuthentication!.call(
+			this,
+			'heyGenApi',
+			requestOptions,
+		);
         if (typeof response === 'string' && response.trim().startsWith('{')) {
             try {
                 return JSON.parse(response);
