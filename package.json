@@ -33,7 +33,8 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/HeyGenApi.credentials.js"
+      "dist/credentials/HeyGenApi.credentials.js",
+      "dist/credentials/HeyGenOAuth2Api.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Heygen/HeygenNode.node.js"
