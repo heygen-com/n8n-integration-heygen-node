@@ -41,11 +41,44 @@ export class HeygenNode implements INodeType {
 		usableAsTool: true,
 		credentials: [
 			{
-			name: 'heyGenApi',
-			required: true,
+				name: 'heyGenApi',
+				required: false,
+				displayOptions: {
+					show: {
+						authentication: ['apiKey'],
+					},
+				},
+			},
+			{
+				name: 'heyGenOAuth2Api',
+				required: false,
+				displayOptions: {
+					show: {
+						authentication: ['oAuth2'],
+					},
+				},
 			},
 		],
 		properties: [
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				options: [
+					{
+						name: 'OAuth2 (Recommended)',
+						value: 'oAuth2',
+						description: 'Connect with your HeyGen account using OAuth2',
+					},
+					{
+						name: 'API Key (Legacy)',
+						value: 'apiKey',
+						description: 'Legacy method - API keys have higher rate limits and costs',
+					},
+				],
+				default: 'oAuth2',
+				description: 'Authentication method to use. OAuth2 is recommended for better rates and lower costs.',
+			},
 			heygenOperations,
 			...operationSpecificFields,
 		],
