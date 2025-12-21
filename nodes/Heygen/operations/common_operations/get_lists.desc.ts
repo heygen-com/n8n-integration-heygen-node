@@ -12,6 +12,7 @@ export const getAvatarsGroupsList: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
+				resource: ['list'],
 				operation: ['listAvatarsGroups'],
 			},
 		},

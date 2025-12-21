@@ -12,6 +12,7 @@ export const uploadAssets: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
+				resource: ['asset'],
 				operation: ['uploadAssets'],
 			},
 		},
@@ -25,6 +26,7 @@ export const uploadAssets: INodeProperties[] = [
 		required: true,
 		displayOptions: {
 			show: {
+				resource: ['asset'],
 				operation: ['uploadAssets'],
 				binaryData: [true],
 			},
@@ -38,6 +40,7 @@ export const uploadAssets: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
+				resource: ['asset'],
 				operation: ['uploadAssets'],
 				binaryData: [false],
 			},
