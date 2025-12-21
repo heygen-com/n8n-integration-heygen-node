@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-heygen-official",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Generate Avatar Video with HeyGen",
   "keywords": [
     "n8n-community-node-package"
@@ -37,7 +37,8 @@
       "dist/credentials/HeyGenOAuth2Api.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Heygen/HeygenNode.node.js"
+      "dist/nodes/Heygen/HeygenNode.node.js",
+      "dist/nodes/Heygen/HeygenTrigger.node.js"
     ]
   },
   "devDependencies": {

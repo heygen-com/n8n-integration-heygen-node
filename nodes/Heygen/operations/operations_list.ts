@@ -2,21 +2,53 @@
 
 import type { INodeProperties } from 'n8n-workflow';
 
-export const heygenOperations: INodeProperties = {
+export const heygenResource: INodeProperties = {
+	displayName: 'Resource',
+	name: 'resource',
+	type: 'options',
+	noDataExpression: true,
+	options: [
+		{ name: 'Video', value: 'video' },
+		{ name: 'Lists', value: 'lists' },
+		{ name: 'Assets', value: 'assets' },
+	],
+	default: 'video',
+};
+
+export const heygenOperations: INodeProperties[] = [
+	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
 		noDataExpression: true,
+		displayOptions: { show: { resource: ['video'] } },
 		options: [
 			{ name: 'Create Avatar Video', value: 'createAvatarVideo' },
 			{ name: 'Create Template Video', value: 'createTemplateVideo' },
 			{ name: 'Get Video Status', value: 'getVideoStatus' },
-			{ name: 'Webhook Triggers', value: 'webhook' },
+		],
+		default: 'createAvatarVideo',
+	},
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['lists'] } },
+		options: [
 			{ name: 'List Avatars', value: 'listAvatars' },
 			{ name: 'List Avatars Groups', value: 'listAvatarsGroups' },
 			{ name: 'List Voices', value: 'listVoices' },
-			{ name: 'Upload Assets', value: 'uploadAssets' },
-			
 		],
-		default: 'createAvatarVideo',
-	}
+		default: 'listAvatars',
+	},
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['assets'] } },
+		options: [{ name: 'Upload Assets', value: 'uploadAssets' }],
+		default: 'uploadAssets',
+	},
+];

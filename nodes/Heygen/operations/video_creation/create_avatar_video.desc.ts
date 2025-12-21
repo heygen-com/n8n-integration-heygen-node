@@ -11,71 +11,12 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createAvatarVideo','createTemplateVideo'],
 			},
 		},
 		default: false,
 		description: 'Whether to add a caption to the video. Default is False. Only text input supports caption',
-	},
-	{
-		displayName: 'Test',
-		name: 'test',
-		type: 'boolean',
-		displayOptions: {
-			show: {
-				operation: ['createAvatarVideo'],
-			},
-		},
-		default: false,
-		description: 'Test option, will not consume credits but will draw HeyGen watermark. Limited availability per day.',
-	},
-	{
-		displayName: 'Title',
-		name: 'title',
-		type: 'string',
-		displayOptions: {
-			show: {
-				operation: ['createAvatarVideo','createTemplateVideo'],
-			},
-		},
-		default: '',
-		description: 'Title for the video',
-	},
-	{
-		displayName: 'Callback ID',
-		name: 'callbackId',
-		type: 'string',
-		displayOptions: {
-			show: {
-				operation: ['createAvatarVideo'],
-			},
-		},
-		default: '',
-		description: 'A custom ID for callback purposes',
-	},
-	{
-		displayName: 'Callback URL',
-		name: 'callbackUrl',
-		type: 'string',
-		displayOptions: {
-			show: {
-				operation: ['createAvatarVideo','createTemplateVideo'],
-			},
-		},
-		default: '',
-		description: 'An optional callback URL to receive a notification when the video is ready',
-	},
-	{
-		displayName: 'Folder ID',
-		name: 'folderId',
-		type: 'string',
-		displayOptions: {
-			show: {
-				operation: ['createAvatarVideo','createTemplateVideo'],
-			},
-		},
-		default: '',
-		description: 'Specify the video output folder destination',
 	},
 	{
 		displayName: 'Video Dimensions',
@@ -86,6 +27,7 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createAvatarVideo','createTemplateVideo'],
 			},
 		},
@@ -123,6 +65,7 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createAvatarVideo'],
 			},
 		},
@@ -264,4 +207,31 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 		],
 		description: 'Video input settings (scenes). Each input describes a scene in the video.',
 	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+		show: {
+			resource: ['video'],
+			operation: ['createAvatarVideo','createTemplateVideo'],
+		},
+		},
+		options: [
+		{
+			displayName: 'Test',
+			name: 'test',
+			type: 'boolean',
+			default: false,
+			description: 'Test option, will not consume credits but will draw HeyGen watermark.',
+		},
+		{ displayName: 'Title', name: 'title', type: 'string', default: '' },
+		{ displayName: 'Callback ID', name: 'callbackId', type: 'string', default: '' },
+		{ displayName: 'Callback URL', name: 'callbackUrl', type: 'string', default: '' },
+		{ displayName: 'Folder ID', name: 'folderId', type: 'string', default: '' },
+		],
+		},
+
 ];

@@ -8,7 +8,6 @@ import {
 	createTemplateVideoDescription,
 	getVideoStatus
  } from './video_creation';
- import { webhookProperties } from './webhooks/webhook.desc'
  import {
 	getAvatarsList,
 	getAvatarsGroupsList,
@@ -31,6 +30,5 @@ export const operationSpecificFields = [
 	...getAvatarsGroupsList,
 	...getVoicesList,
 	...uploadAssets,
-	...webhookProperties,
 	//...checkStatusDescription,
 ];

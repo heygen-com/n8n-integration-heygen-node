@@ -12,6 +12,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createTemplateVideo'],
 			},
 		},
@@ -24,6 +25,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		type: 'string',
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createTemplateVideo'],
 			},
 		},
@@ -36,6 +38,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createTemplateVideo'],
 			},
 		},
@@ -49,6 +52,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		placeholder: 'Add Variable',
 		displayOptions: {
 			show: {
+				resource: ['video'],
 				operation: ['createTemplateVideo'],
 			},
 		},
@@ -111,7 +115,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 				],
 			},
 		],
-	}
+	},
 
 	// Add other optional fields here
 ];

@@ -12,11 +12,12 @@ export async function createAvatarVideoApi(
 		caption: this.getNodeParameter('caption', i) as boolean,
 	};
 
-	body.test = this.getNodeParameter('test', i, false) as boolean;
+	body.test = this.getNodeParameter('additionalFields.test', i, false) as boolean;
 
 	const optionalFields = ['title', 'callbackId', 'callbackUrl', 'folderId'];
 	for (const field of optionalFields) {
-		const value = this.getNodeParameter(field, i, '') as string;
+		const value = this.getNodeParameter(`additionalFields.${field}`, i, '') as string;
+
 		if (value) body[field.replace(/([A-Z])/g, '_$1').toLowerCase()] = value;
 	}
 
