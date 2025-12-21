@@ -214,24 +214,24 @@ export const createAvatarVideoDescription: INodeProperties[] = [
 		placeholder: 'Add Field',
 		default: {},
 		displayOptions: {
-		show: {
-			resource: ['video'],
-			operation: ['createAvatarVideo','createTemplateVideo'],
-		},
+			show: {
+				resource: ['video'],
+				operation: ['createAvatarVideo', 'createTemplateVideo'],
+			},
 		},
 		options: [
-		{
-			displayName: 'Test',
-			name: 'test',
-			type: 'boolean',
-			default: false,
-			description: 'Test option, will not consume credits but will draw HeyGen watermark.',
-		},
-		{ displayName: 'Title', name: 'title', type: 'string', default: '' },
-		{ displayName: 'Callback ID', name: 'callbackId', type: 'string', default: '' },
-		{ displayName: 'Callback URL', name: 'callbackUrl', type: 'string', default: '' },
-		{ displayName: 'Folder ID', name: 'folderId', type: 'string', default: '' },
+			{ displayName: 'Callback ID', name: 'callbackId', type: 'string', default: '' },
+			{ displayName: 'Callback URL', name: 'callbackUrl', type: 'string', default: '' },
+			{ displayName: 'Folder ID', name: 'folderId', type: 'string', default: '' },
+			{
+				displayName: 'Test',
+				name: 'test',
+				type: 'boolean',
+				default: false,
+				description: 'Test option, will not consume credits but will draw HeyGen watermark',
+			},
+			{ displayName: 'Title', name: 'title', type: 'string', default: '' },
 		],
-		},
+	},
 
 ];

@@ -8,7 +8,7 @@ export const getVideoStatus: INodeProperties[] = [
 		type: 'string',
 		displayOptions: {
 			show: {
-				resource: ['lists'],
+				resource: ['list'],
 				operation: ['getVideoStatus'],
 			},
 		},
