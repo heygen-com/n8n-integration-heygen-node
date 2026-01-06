@@ -10,7 +10,21 @@ export class HeyGenOAuth2Api implements ICredentialType {
 			displayName: 'Grant Type',
 			name: 'grantType',
 			type: 'hidden',
-			default: 'authorizationCode',
+			default: 'pkce',
+		},
+		{
+			displayName: 'Client ID',
+			name: 'clientId',
+			type: 'string',
+			default: '',
+			required: true,
+			description: 'Your HeyGen OAuth Client ID (provided by HeyGen Partnerships team)',
+		},
+		{
+			displayName: 'Client Secret',
+			name: 'clientSecret',
+			type: 'hidden',
+			default: '',
 		},
 		{
 			displayName: 'Authorization URL',
@@ -44,4 +58,3 @@ export class HeyGenOAuth2Api implements ICredentialType {
 		},
 	];
 }
-
