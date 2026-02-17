@@ -29,14 +29,14 @@ import { getTemplatesList } from './methods/getLists';
 
 export class HeygenNode implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'HeyGen Official Node',
+		displayName: 'HeyGen',
 		name: 'heygenNode',
 		icon: 'file:heygen.svg',
 		group: ['ai', 'contentCreation'],
 		version: 1,
 		description: 'HeyGen community node',
 		defaults: {
-			name: 'HeyGen community node',
+			name: 'HeyGen',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
