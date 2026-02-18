@@ -38,64 +38,64 @@ export class HeygenTrigger implements INodeType {
 				type: 'multiOptions',
 				options: [
 					{
-						name: 'Avatar Video Success',
-						value: 'avatar_video.success',
-					},
-					{
 						name: 'Avatar Video Fail',
 						value: 'avatar_video.fail',
-					},
-					{
-						name: 'Avatar Video GIF Success',
-						value: 'avatar_video_gif.success',
 					},
 					{
 						name: 'Avatar Video GIF Fail',
 						value: 'avatar_video_gif.fail',
 					},
 					{
-						name: 'Video Translate Success',
-						value: 'video_translate.success',
+						name: 'Avatar Video GIF Success',
+						value: 'avatar_video_gif.success',
 					},
 					{
-						name: 'Video Translate Fail',
-						value: 'video_translate.fail',
-					},
-					{
-						name: 'Personalized Video',
-						value: 'personalized_video',
-					},
-					{
-						name: 'Instant Avatar Success',
-						value: 'instant_avatar.success',
+						name: 'Avatar Video Success',
+						value: 'avatar_video.success',
 					},
 					{
 						name: 'Instant Avatar Fail',
 						value: 'instant_avatar.fail',
 					},
 					{
-						name: 'Photo Avatar Generation Success',
-						value: 'photo_avatar_generation.success',
+						name: 'Instant Avatar Success',
+						value: 'instant_avatar.success',
 					},
 					{
-						name: 'Photo Avatar Generation Fail',
-						value: 'photo_avatar_generation.fail',
+						name: 'Personalized Video',
+						value: 'personalized_video',
 					},
 					{
-						name: 'Photo Avatar Train Success',
-						value: 'photo_avatar_train.success',
-					},
-					{
-						name: 'Photo Avatar Train Fail',
-						value: 'photo_avatar_train.fail',
+						name: 'Photo Avatar Add Motion Fail',
+						value: 'photo_avatar_add_motion.fail',
 					},
 					{
 						name: 'Photo Avatar Add Motion Success',
 						value: 'photo_avatar_add_motion.success',
 					},
 					{
-						name: 'Photo Avatar Add Motion Fail',
-						value: 'photo_avatar_add_motion.fail',
+						name: 'Photo Avatar Generation Fail',
+						value: 'photo_avatar_generation.fail',
+					},
+					{
+						name: 'Photo Avatar Generation Success',
+						value: 'photo_avatar_generation.success',
+					},
+					{
+						name: 'Photo Avatar Train Fail',
+						value: 'photo_avatar_train.fail',
+					},
+					{
+						name: 'Photo Avatar Train Success',
+						value: 'photo_avatar_train.success',
+					},
+					{
+						name: 'Video Translate Fail',
+						value: 'video_translate.fail',
+					},
+					{
+						name: 'Video Translate Success',
+						value: 'video_translate.success',
 					},
 				],
 				default: [],
