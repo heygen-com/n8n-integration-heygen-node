@@ -173,3 +173,60 @@ export async function getVideoStatusApi(
 
 }
 
+export async function createVideoAgentApi(
+	this: IExecuteFunctions,
+	i: number,
+): Promise<IDataObject> {
+	const prompt = this.getNodeParameter('prompt', i) as string;
+	
+	if (!prompt || prompt.length === 0) {
+		throw new NodeOperationError(this.getNode(), 'Prompt is required and must be between 1-10000 characters.');
+	}
+	
+	if (prompt.length > 10000) {
+		throw new NodeOperationError(this.getNode(), 'Prompt must be between 1-10000 characters.');
+	}
+
+	const body: IDataObject = {
+		prompt,
+	};
+
+	const configParam = this.getNodeParameter('config.configValues', i, {}) as IDataObject | undefined;
+	if (configParam && Object.keys(configParam).length > 0) {
+		const configObj: IDataObject = {};
+		const config = configParam as IDataObject;
+		
+		if (config.duration_sec) {
+			const duration = config.duration_sec as number;
+			if (duration < 5) {
+				throw new NodeOperationError(this.getNode(), 'Duration must be at least 5 seconds.');
+			}
+			configObj.duration_sec = duration;
+		}
+		
+		if (config.orientation) {
+			configObj.orientation = config.orientation as string;
+		}
+		
+		if (config.avatar_id) {
+			configObj.avatar_id = config.avatar_id as string;
+		}
+		
+		if (Object.keys(configObj).length > 0) {
+			body.config = configObj;
+		}
+	}
+
+	const response = await heyGenApiRequest.call(
+		this,
+		'POST',
+		'/video_agent/generate',
+		body,
+		{},
+		{},
+		'api',
+		'v1',
+	);
+
+	return response;
+}

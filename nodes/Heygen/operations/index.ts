@@ -6,6 +6,7 @@
 import {
 	createAvatarVideoDescription, 
 	createTemplateVideoDescription,
+	createVideoAgentDescription,
 	getVideoStatus
  } from './video_creation';
  import {
@@ -16,6 +17,9 @@ import {
   import {
 	uploadAssets
  } from './common_operations/upload_assets.desc'
+ import {
+	registerOAuthClientDescription
+ } from './oauth'
 //import { generatePhotoDescription, checkStatusDescription } from './photo_avatars';
 
 
@@ -23,6 +27,7 @@ export const operationSpecificFields = [
 	// video operations
 	...createAvatarVideoDescription,
 	...createTemplateVideoDescription,
+	...createVideoAgentDescription,
 	...getVideoStatus,
 
 	//common operations
@@ -30,5 +35,8 @@ export const operationSpecificFields = [
 	...getAvatarsGroupsList,
 	...getVoicesList,
 	...uploadAssets,
+	
+	//oauth operations
+	...registerOAuthClientDescription,
 	//...checkStatusDescription,
 ];
