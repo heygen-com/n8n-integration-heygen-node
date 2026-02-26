@@ -15,6 +15,7 @@ import { operationSpecificFields } from './operations';
 import {
 	createAvatarVideoApi,
 	createTemplateVideoApi,
+	createVideoAgentApi,
 	getVideoStatusApi,
 } from './operations/video_creation/api_requests';
 import {
@@ -23,6 +24,9 @@ import {
 	getVoiceListApi,
 	uploadFileApi,
 } from './operations/common_operations/api_requests';
+import {
+	registerOAuthClientApi,
+} from './operations/oauth/api_requests';
 
 // load options
 import { getTemplatesList } from './methods/getLists';
@@ -51,6 +55,10 @@ export class HeygenNode implements INodeType {
 					show: {
 						authentication: ['apiKey'],
 					},
+					hide: {
+						resource: ['oauth'],
+						operation: ['registerOAuthClient'],
+					},
 				},
 			},
 			{
@@ -59,6 +67,10 @@ export class HeygenNode implements INodeType {
 				displayOptions: {
 					show: {
 						authentication: ['oAuth2'],
+					},
+					hide: {
+						resource: ['oauth'],
+						operation: ['registerOAuthClient'],
 					},
 				},
 			},
@@ -70,6 +82,12 @@ export class HeygenNode implements INodeType {
 				displayName: 'Authentication',
 				name: 'authentication',
 				type: 'options',
+				displayOptions: {
+					hide: {
+						resource: ['oauth'],
+						operation: ['registerOAuthClient'],
+					},
+				},
 				options: [
 					{
 						name: 'OAuth2 (Recommended)',
@@ -127,6 +145,11 @@ export class HeygenNode implements INodeType {
 					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
+				if (operation === 'createVideoAgent') {
+					const response = await createVideoAgentApi.call(this, i);
+					returnData.push({ json: response, pairedItem: { item: i } });
+				}
+
 				// common operations
 				if (operation === 'listAvatars') {
 					const response = await getAvatarsListApi.call(this, i);
@@ -145,6 +168,12 @@ export class HeygenNode implements INodeType {
 
 				if (operation === 'uploadAssets') {
 					const response = await uploadFileApi.call(this, i);
+					returnData.push({ json: response, pairedItem: { item: i } });
+				}
+
+				// oauth operations
+				if (operation === 'registerOAuthClient') {
+					const response = await registerOAuthClientApi.call(this, i);
 					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 			} catch (error) {
