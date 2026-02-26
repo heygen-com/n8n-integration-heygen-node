@@ -26,7 +26,7 @@ export const heygenOperations: INodeProperties[] = [
 		options: [
 			{ name: 'Create Avatar Video', value: 'createAvatarVideo', action: 'Create avatar video a video' },
 			{ name: 'Create Template Video', value: 'createTemplateVideo', action: 'Create template video a video' },
-			{ name: 'Create a video from Video Agent', value: 'createVideoAgent', action: 'Create a video from Video Agent a video' },
+			{ name: 'Create a Video From Video Agent', value: 'createVideoAgent', action: 'Create a video from video agent a video' },
 			{ name: 'Get Video Status', value: 'getVideoStatus', action: 'Get video status a video' },
 		],
 		default: 'createAvatarVideo',
@@ -60,7 +60,7 @@ export const heygenOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: { show: { resource: ['oauth'] } },
 		options: [
-			{ name: 'Register OAuth Client', value: 'registerOAuthClient', action: 'Register OAuth client an oauth' },
+			{ name: 'Register OAuth Client', value: 'registerOAuthClient', action: 'Register oauth client an oauth' },
 		],
 		default: 'registerOAuthClient',
 	},

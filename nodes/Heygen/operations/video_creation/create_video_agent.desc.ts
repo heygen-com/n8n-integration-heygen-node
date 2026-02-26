@@ -39,7 +39,7 @@ export const createVideoAgentDescription: INodeProperties[] = [
 				displayName: 'Config',
 				values: [
 					{
-						displayName: 'Duration (seconds)',
+						displayName: 'Duration (Seconds)',
 						name: 'duration_sec',
 						type: 'number',
 						default: 60,
