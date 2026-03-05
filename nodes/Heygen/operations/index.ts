@@ -7,6 +7,7 @@ import {
 	createAvatarVideoDescription, 
 	createTemplateVideoDescription,
 	createVideoAgentDescription,
+	translateVideoDescription,
 	getVideoStatus
  } from './video_creation';
  import {
@@ -28,6 +29,7 @@ export const operationSpecificFields = [
 	...createAvatarVideoDescription,
 	...createTemplateVideoDescription,
 	...createVideoAgentDescription,
+	...translateVideoDescription,
 	...getVideoStatus,
 
 	//common operations

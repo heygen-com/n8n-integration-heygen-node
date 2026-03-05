@@ -28,6 +28,7 @@ export const heygenOperations: INodeProperties[] = [
 			{ name: 'Create Template Video', value: 'createTemplateVideo', action: 'Create template video a video' },
 			{ name: 'Create a Video From Video Agent', value: 'createVideoAgent', action: 'Create a video from video agent a video' },
 			{ name: 'Get Video Status', value: 'getVideoStatus', action: 'Get video status a video' },
+			{ name: 'Translate Video', value: 'translateVideo', action: 'Translate video a video' },
 		],
 		default: 'createAvatarVideo',
 	},

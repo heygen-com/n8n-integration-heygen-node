@@ -16,6 +16,7 @@ import {
 	createAvatarVideoApi,
 	createTemplateVideoApi,
 	createVideoAgentApi,
+	translateVideoApi,
 	getVideoStatusApi,
 } from './operations/video_creation/api_requests';
 import {
@@ -147,6 +148,11 @@ export class HeygenNode implements INodeType {
 
 				if (operation === 'createVideoAgent') {
 					const response = await createVideoAgentApi.call(this, i);
+					returnData.push({ json: response, pairedItem: { item: i } });
+				}
+
+				if (operation === 'translateVideo') {
+					const response = await translateVideoApi.call(this, i);
 					returnData.push({ json: response, pairedItem: { item: i } });
 				}
 
