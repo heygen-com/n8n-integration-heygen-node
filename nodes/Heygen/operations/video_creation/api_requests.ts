@@ -230,3 +230,129 @@ export async function createVideoAgentApi(
 
 	return response;
 }
+
+export async function translateVideoApi(
+	this: IExecuteFunctions,
+	i: number,
+): Promise<IDataObject> {
+	const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+	const audioUrl = this.getNodeParameter('audioUrl', i, '') as string;
+	const useMultipleLanguages = this.getNodeParameter('useMultipleLanguages', i, false) as boolean;
+
+	if (!videoUrl && !audioUrl) {
+		throw new NodeOperationError(this.getNode(), 'Either video_url or audio_url must be provided.');
+	}
+
+	const body: IDataObject = {};
+
+	if (videoUrl) {
+		body.video_url = videoUrl;
+	}
+	if (audioUrl) {
+		body.audio_url = audioUrl;
+	}
+
+	// Handle output languages
+	if (useMultipleLanguages) {
+		const outputLanguages = this.getNodeParameter('outputLanguages', i, []) as string[];
+		if (outputLanguages.length === 0) {
+			throw new NodeOperationError(this.getNode(), 'At least one output language must be provided when using multiple languages.');
+		}
+		body.output_languages = outputLanguages;
+	} else {
+		const outputLanguage = this.getNodeParameter('outputLanguage', i, '') as string;
+		if (!outputLanguage && !audioUrl) {
+			throw new NodeOperationError(this.getNode(), 'Either output_language or output_languages must be provided (unless audio_url is provided).');
+		}
+		if (outputLanguage) {
+			body.output_language = outputLanguage;
+		}
+	}
+
+	// Additional fields
+	const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+	if (additionalFields.title) {
+		body.title = additionalFields.title;
+	}
+	if (additionalFields.inputLanguage) {
+		body.input_language = additionalFields.inputLanguage;
+	}
+	if (additionalFields.translateAudioOnly !== undefined) {
+		body.translate_audio_only = additionalFields.translateAudioOnly;
+	}
+	if (additionalFields.speakerNum !== undefined) {
+		body.speaker_num = additionalFields.speakerNum;
+	}
+	if (additionalFields.callbackId) {
+		body.callback_id = additionalFields.callbackId;
+	}
+	if (additionalFields.brandVoiceId) {
+		body.brand_voice_id = additionalFields.brandVoiceId;
+	}
+	if (additionalFields.checkCreditsSync !== undefined) {
+		body.check_credits_sync = additionalFields.checkCreditsSync;
+	}
+	if (additionalFields.enableDynamicDuration !== undefined) {
+		body.enable_dynamic_duration = additionalFields.enableDynamicDuration;
+	}
+	if (additionalFields.callbackUrl) {
+		body.callback_url = additionalFields.callbackUrl;
+	}
+	if (additionalFields.fpsMode) {
+		body.fps_mode = additionalFields.fpsMode;
+	}
+	if (additionalFields.validateOnly !== undefined) {
+		body.validate_only = additionalFields.validateOnly;
+	}
+	if (additionalFields.folderId) {
+		body.folder_id = additionalFields.folderId;
+	}
+	if (additionalFields.srtUrl) {
+		body.srt_url = additionalFields.srtUrl;
+	}
+	if (additionalFields.srtRole) {
+		body.srt_role = additionalFields.srtRole;
+	}
+	if (additionalFields.mode) {
+		body.mode = additionalFields.mode;
+	}
+	if (additionalFields.useDisguisedVoice !== undefined) {
+		body.use_disguised_voice = additionalFields.useDisguisedVoice;
+	}
+	if (additionalFields.enableCaption !== undefined) {
+		body.enable_caption = additionalFields.enableCaption;
+	}
+	if (additionalFields.keepTheSameFormat !== undefined) {
+		body.keep_the_same_format = additionalFields.keepTheSameFormat;
+	}
+	if (additionalFields.disableMusicTrack !== undefined) {
+		body.disable_music_track = additionalFields.disableMusicTrack;
+	}
+	if (additionalFields.enableSpeechEnhancement !== undefined) {
+		body.enable_speech_enhancement = additionalFields.enableSpeechEnhancement;
+	}
+	if (additionalFields.enableWatermark !== undefined) {
+		body.enable_watermark = additionalFields.enableWatermark;
+	}
+	if (additionalFields.startTime !== undefined) {
+		body.start_time = additionalFields.startTime;
+	}
+	if (additionalFields.endTime !== undefined) {
+		body.end_time = additionalFields.endTime;
+	}
+	if (additionalFields.createCollection !== undefined) {
+		body.create_collection = additionalFields.createCollection;
+	}
+
+	return await heyGenApiRequest.call(
+		this,
+		'POST',
+		'/video_translate',
+		body,
+		{},
+		{},
+		'api',
+		'v2',
+	);
+}
