@@ -1,6 +1,6 @@
 {
   "name": "@heygenofficial/n8n-nodes-heygen-official",
-  "version": "0.1.7.1",
+  "version": "0.1.8",
   "description": "Generate Avatar Video with HeyGen",
   "keywords": [
     "n8n-community-node-package"
