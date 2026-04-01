@@ -28,4 +28,5 @@
 		"nodes/**/*.json",
 		"package.json",
 	],
+	"exclude": ["**/*.test.ts", "dist", "node_modules"]
 }

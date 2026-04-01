@@ -5,7 +5,7 @@ import type {
 	INodeTypeDescription,
 } from 'n8n-workflow';
 
-import { NodeConnectionType } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
 // operations
 import { heygenResource, heygenOperations } from './operations/operations_list';
@@ -37,14 +37,14 @@ export class HeygenNode implements INodeType {
 		displayName: 'HeyGen',
 		name: 'heygenNode',
 		icon: 'file:heygen.svg',
-		group: ['ai', 'contentCreation'],
+		group: ['ai', 'contentCreation'] as unknown as INodeTypeDescription['group'],
 		version: 1,
 		description: 'HeyGen community node',
 		defaults: {
 			name: 'HeyGen',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,
 
 		// credential setup

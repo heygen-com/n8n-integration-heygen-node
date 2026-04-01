@@ -1,7 +1,8 @@
 import type { IExecuteFunctions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 import type { IDataObject } from 'n8n-workflow';
-import { heyGenApiRequest } from '../../shared/shared_functions'; 
+import { heyGenApiRequest } from '../../shared/shared_functions';
+import { buildTemplateVariablesFromRows } from './template_variables';
 
 export async function createAvatarVideoApi(
 	this: IExecuteFunctions,
@@ -110,9 +111,11 @@ export async function createTemplateVideoApi(
 		caption: this.getNodeParameter('caption', i) as boolean,
 	};
 
+	body.test = this.getNodeParameter('additionalFields.test', i, false) as boolean;
+
 	const optionalFields = ['title', 'callbackId', 'callbackUrl', 'folderId'];
 	for (const field of optionalFields) {
-		const value = this.getNodeParameter(field, i, '') as string;
+		const value = this.getNodeParameter(`additionalFields.${field}`, i, '') as string;
 		if (value) body[field.replace(/([A-Z])/g, '_$1').toLowerCase()] = value;
 	}
 
@@ -128,32 +131,8 @@ export async function createTemplateVideoApi(
 		throw new NodeOperationError(this.getNode(), 'You must provide a Template ID manually or select one from the list.');
 	}
 
-	// Template Variables
 	const templateVariables = this.getNodeParameter('templateVariables.variable', i, []) as IDataObject[];
-	const variables: Record<string, IDataObject> = {};
-
-	for (const v of templateVariables) {
-		const key = v.key as string;
-		const type = v.type as string;
-
-		if (!key || !type) continue;
-
-		const variable: IDataObject = {
-			name: key, //v.name || key, - we show user only key field, and fill variable name just in request
-			type,
-			properties: {},
-		};
-
-		if (type === 'text') {
-			variable.properties = { content: v.textContent || '' };
-		} else if (type === 'voice') {
-			variable.properties = { voice_id: v.voiceId || '' };
-		}
-
-		variables[key] = variable;
-	}
-
-	body.variables = variables;
+	body.variables = buildTemplateVariablesFromRows(templateVariables);
 
 	return await heyGenApiRequest.call(this,'POST',`/template/${template_id}/generate`,body,{},{},'api','v2',
 	);

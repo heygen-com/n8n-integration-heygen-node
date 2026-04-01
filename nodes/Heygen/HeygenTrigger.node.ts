@@ -5,7 +5,7 @@ import type {
 	IWebhookResponseData,
 } from 'n8n-workflow';
 
-import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
+import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 import { handleHeygenWebhookEvent } from './operations/webhooks/webhook';
 
 export class HeygenTrigger implements INodeType {
@@ -19,7 +19,7 @@ export class HeygenTrigger implements INodeType {
 		defaults: { name: 'HeyGen Trigger' },
 
 		inputs: [],
-		outputs: [NodeConnectionType.Main],
+		outputs: [NodeConnectionTypes.Main],
 
 		webhooks: [
 			{
