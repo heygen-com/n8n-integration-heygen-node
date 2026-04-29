@@ -1,57 +1,42 @@
 import type { IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 import type { IDataObject } from 'n8n-workflow';
-import { heyGenApiRequest } from '../../shared/shared_functions'; 
-
-
+import { heyGenApiRequest, heyGenApiUploadAssetV3 } from '../../shared/shared_functions';
 
 export async function getAvatarsListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-
-	return await heyGenApiRequest.call(this,'GET','/avatars',{},{},{},'api','v2');
-
+	// v3: list avatar looks (IDs map to avatar_id on POST /v3/videos)
+	return await heyGenApiRequest.call(this, 'GET', '/avatars/looks', {}, { limit: 50 }, {}, 'api', 'v3');
 }
-
 
 export async function getAvatarsGroupsListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-
-	const includePublic = this.getNodeParameter('includePublic', i) as string;
-
-	return await heyGenApiRequest.call(
-                            this,
-                            'GET',
-                            '/avatar_group.list',
-                            {},
-                            {include_public: includePublic},
-                            {},
-                            'api',
-                            'v2'
-                        );
-
+	const includePublic = this.getNodeParameter('includePublic', i, false) as boolean;
+	const qs: IDataObject = { limit: 50 };
+	if (includePublic) {
+		qs.ownership = 'public';
+	}
+	return await heyGenApiRequest.call(this, 'GET', '/avatars', {}, qs, {}, 'api', 'v3');
 }
-
 
 export async function getVoiceListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-
 	return await heyGenApiRequest.call(
-                            this,
-                            'GET',
-                            '/voices',
-                            {},
-                            {},
-                            {},
-                            'api',
-                            'v2'
-                        );
-
+		this,
+		'GET',
+		'/voices',
+		{},
+		{ type: 'public', limit: 100 },
+		{},
+		'api',
+		'v3',
+	);
 }
 
 
@@ -81,19 +66,14 @@ export async function uploadFileApi(
 				throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" exists on item!`);
 			}
 
-			// For direct binary upload, send the binary data with the proper Content-Type
-			responseData = await heyGenApiRequest.call(
+			const buf = Buffer.from(binaryProperty.data, 'base64');
+			const fileName = binaryProperty.fileName || 'upload';
+			responseData = (await heyGenApiUploadAssetV3.call(
 				this,
-				'POST',
-				'/asset',
-				{},
-				{},
-				{
-					binary: true,
-					binaryData: Buffer.from(binaryProperty.data, 'base64'),
-					mimeType: binaryProperty.mimeType,
-				}
-			);
+				buf,
+				fileName,
+				binaryProperty.mimeType || 'application/octet-stream',
+			)) as IDataObject;
 		} else {
 			// File URL option
 			const fileUrl = this.getNodeParameter('fileUrl', i) as string;
@@ -141,19 +121,20 @@ export async function uploadFileApi(
 				mimeType = map[ext] ?? 'application/octet-stream';
 			}
 
-			// Upload the file using binary mode
-			responseData = await heyGenApiRequest.call(
-				this,
-				'POST',
-				'/asset',
-				{},
-				{},
-				{
-					binary: true,
-					binaryData: fileBuffer,
-					mimeType: mimeType,
+			const nameFromUrl = (() => {
+				try {
+					return new URL(fileUrl).pathname.split('/').pop() || 'upload';
+				} catch {
+					return 'upload';
 				}
-			);
+			})();
+			
+			responseData = (await heyGenApiUploadAssetV3.call(
+				this,
+				fileBuffer,
+				nameFromUrl,
+				mimeType,
+			)) as IDataObject;
 		}
 		if (!responseData) {
 			throw new NodeOperationError(this.getNode(), 'Upload failed, no response received.');
