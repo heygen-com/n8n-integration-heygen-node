@@ -5,7 +5,7 @@ import type {
 	INodeTypeDescription,
 } from 'n8n-workflow';
 
-import { NodeConnectionType } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
 // operations
 import { heygenResource, heygenOperations } from './operations/operations_list';
@@ -37,14 +37,14 @@ export class HeygenNode implements INodeType {
 		displayName: 'HeyGen',
 		name: 'heygenNode',
 		icon: 'file:heygen.svg',
-		group: ['ai', 'contentCreation'],
+		group: ['ai', 'contentCreation'] as unknown as INodeTypeDescription['group'],
 		version: 1,
 		description: 'HeyGen community node',
 		defaults: {
 			name: 'HeyGen',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,
 
 		// credential setup
@@ -130,57 +130,59 @@ export class HeygenNode implements INodeType {
 			try {
 				const operation = this.getNodeParameter('operation', i) as string;
 
-				// video creation operations
-				if (operation === 'createAvatarVideo') {
-					const response = await createAvatarVideoApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'createTemplateVideo') {
-					const response = await createTemplateVideoApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'getVideoStatus') {
-					const response = await getVideoStatusApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'createVideoAgent') {
-					const response = await createVideoAgentApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'translateVideo') {
-					const response = await translateVideoApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				// common operations
-				if (operation === 'listAvatars') {
-					const response = await getAvatarsListApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'listAvatarsGroups') {
-					const response = await getAvatarsGroupsListApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'listVoices') {
-					const response = await getVoiceListApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				if (operation === 'uploadAssets') {
-					const response = await uploadFileApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
-				}
-
-				// oauth operations
-				if (operation === 'registerOAuthClient') {
-					const response = await registerOAuthClientApi.call(this, i);
-					returnData.push({ json: response, pairedItem: { item: i } });
+				switch (operation) {
+					case 'createAvatarVideo': {
+						const response = await createAvatarVideoApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'createTemplateVideo': {
+						const response = await createTemplateVideoApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'getVideoStatus': {
+						const response = await getVideoStatusApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'createVideoAgent': {
+						const response = await createVideoAgentApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'translateVideo': {
+						const response = await translateVideoApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'listAvatars': {
+						const response = await getAvatarsListApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'listAvatarsGroups': {
+						const response = await getAvatarsGroupsListApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'listVoices': {
+						const response = await getVoiceListApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'uploadAssets': {
+						const response = await uploadFileApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					case 'registerOAuthClient': {
+						const response = await registerOAuthClientApi.call(this, i);
+						returnData.push({ json: response, pairedItem: { item: i } });
+						break;
+					}
+					default:
+						break;
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {
