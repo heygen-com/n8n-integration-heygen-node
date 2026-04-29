@@ -9,6 +9,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getTemplatesList',
+			loadOptionsDependsOn: ['authentication'],
 		},
 		displayOptions: {
 			show: {
@@ -17,7 +18,8 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose from the list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
 	{
 		displayName: 'Template ID (Manual Input)',
@@ -30,7 +32,8 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Template ID - use this field to override (if needed) template ID from the list above. If don\'t need - just skip this field.',
+		description:
+			'Optional override: enter a template_id directly if it is not in the list (for example another API key’s space). When set, this takes precedence over Template Name or ID above.',
 	},
 	{
 		displayName: 'Enable Sharing',
@@ -66,29 +69,95 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 				name: 'variable',
 				values: [
 					{
-						displayName: 'Variable Key',
-						name: 'key',
+						displayName: 'Audio Asset ID',
+						name: 'audioAssetId',
 						type: 'string',
 						default: '',
-						description: 'Unique key to be used as the object key (e.g. script_en)',
+						displayOptions: {
+							show: {
+								type: ['audio'],
+							},
+						},
 					},
-					/*
 					{
-						displayName: 'Name',
-						name: 'name',
+						displayName: 'Character ID',
+						name: 'characterId',
 						type: 'string',
 						default: '',
-						description: 'Name value inside the object',
-					},*/
+						displayOptions: {
+							show: {
+								type: ['character'],
+							},
+						},
+						description: 'Maps to properties.character_id',
+					},
 					{
-						displayName: 'Type',
-						name: 'type',
+						displayName: 'Character Kind',
+						name: 'characterKind',
+						type: 'options',
+						options: [{ name: 'Avatar', value: 'avatar' }],
+						default: 'avatar',
+						displayOptions: {
+							show: {
+								type: ['character'],
+							},
+						},
+						description: 'Maps to properties.type in the API',
+					},
+					{
+						displayName: 'Image Asset ID',
+						name: 'imageAssetId',
+						type: 'string',
+						default: '',
+						displayOptions: {
+							show: {
+								type: ['image'],
+							},
+						},
+						description: 'HeyGen asset ID for the image',
+					},
+					{
+						displayName: 'Image Fit',
+						name: 'imageFit',
 						type: 'options',
 						options: [
-							{ name: 'Text', value: 'text' },
-							{ name: 'Voice', value: 'voice' },
+							{ name: 'Cover', value: 'cover' },
+							{ name: 'Contain', value: 'contain' },
 						],
-						default: 'text',
+						default: 'cover',
+						displayOptions: {
+							show: {
+								type: ['image'],
+							},
+						},
+					},
+					{
+						displayName: 'Locale',
+						name: 'voiceLocale',
+						type: 'string',
+						default: '',
+						placeholder: 'en-US',
+						displayOptions: {
+							show: {
+								type: ['voice'],
+							},
+						},
+						description: 'Optional BCP-47 locale (e.g. en-US)',
+					},
+					{
+						displayName: 'Play Style',
+						name: 'videoPlayStyle',
+						type: 'options',
+						options: [
+							{ name: 'Loop', value: 'loop' },
+							{ name: 'Once', value: 'once' },
+						],
+						default: 'loop',
+						displayOptions: {
+							show: {
+								type: ['video'],
+							},
+						},
 					},
 					{
 						displayName: 'Text Content',
@@ -102,6 +171,53 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 						},
 					},
 					{
+						displayName: 'Type',
+						name: 'type',
+						type: 'options',
+						options: [
+							{ name: 'Audio', value: 'audio' },
+							{ name: 'Character', value: 'character' },
+							{ name: 'Image', value: 'image' },
+							{ name: 'Text', value: 'text' },
+							{ name: 'Video', value: 'video' },
+							{ name: 'Voice', value: 'voice' },
+						],
+						default: 'text',
+					},
+					{
+						displayName: 'Variable Key',
+						name: 'key',
+						type: 'string',
+						default: '',
+						description: 'Must match the template slot key (e.g. HEADLINE)',
+					},
+					{
+						displayName: 'Video Fit',
+						name: 'videoFit',
+						type: 'options',
+						options: [
+							{ name: 'Cover', value: 'cover' },
+							{ name: 'Contain', value: 'contain' },
+						],
+						default: 'contain',
+						displayOptions: {
+							show: {
+								type: ['video'],
+							},
+						},
+					},
+					{
+						displayName: 'Video URL',
+						name: 'videoUrl',
+						type: 'string',
+						default: '',
+						displayOptions: {
+							show: {
+								type: ['video'],
+							},
+						},
+					},
+					{
 						displayName: 'Voice ID',
 						name: 'voiceId',
 						type: 'string',
@@ -111,6 +227,23 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 								type: ['voice'],
 							},
 						},
+					},
+					{
+						displayName: 'Volume',
+						name: 'videoVolume',
+						type: 'number',
+						typeOptions: {
+							minValue: 0,
+							maxValue: 1,
+							numberPrecision: 2,
+						},
+						default: 1,
+						displayOptions: {
+							show: {
+								type: ['video'],
+							},
+						},
+						description: '0–1 (e.g. 0.5 for background music)',
 					},
 				],
 			},
