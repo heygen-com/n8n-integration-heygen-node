@@ -9,6 +9,7 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getTemplatesList',
+			loadOptionsDependsOn: ['authentication'],
 		},
 		displayOptions: {
 			show: {
@@ -17,7 +18,8 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose from the list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
 	{
 		displayName: 'Template ID (Manual Input)',
@@ -30,7 +32,8 @@ export const createTemplateVideoDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Template ID - use this field to override (if needed) template ID from the list above. If don\'t need - just skip this field.',
+		description:
+			'Optional override: enter a template_id directly if it is not in the list (for example another API key’s space). When set, this takes precedence over Template Name or ID above.',
 	},
 	{
 		displayName: 'Enable Sharing',
