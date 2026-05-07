@@ -1,44 +1,43 @@
-// Import operations
-//import { videoCreationOperations } from './video_creation/';
-//import { photoAvatarOperations } from './photo_avatars';
-
-// Import parameter descriptions
 import {
-	createAvatarVideoDescription, 
+	createAvatarVideoDescription,
 	createTemplateVideoDescription,
-	createVideoAgentDescription,
+	getVideoStatus,
 	translateVideoDescription,
-	getVideoStatus
- } from './video_creation';
- import {
+	videosV3Description,
+} from './video_creation';
+import {
 	getAvatarsList,
 	getAvatarsGroupsList,
-	getVoicesList
- } from './common_operations/get_lists.desc'
-  import {
-	uploadAssets
- } from './common_operations/upload_assets.desc'
- import {
-	registerOAuthClientDescription
- } from './oauth'
-//import { generatePhotoDescription, checkStatusDescription } from './photo_avatars';
-
+	getVoicesList,
+	sharedListPaginationDescription,
+	videoAgentStylesFilterDescription,
+} from './common_operations/get_lists.desc';
+import { voiceActionsDescription } from './voice/voice_actions.desc';
+import { avatarCreateDescription } from './avatar/avatar_create.desc';
+import { videoAgentDescription } from './video_agent/video_agent.desc';
+import { lipsyncDescription } from './lipsync/lipsync.desc';
+import { uploadAssets } from './common_operations/upload_assets.desc';
+import { registerOAuthClientDescription } from './oauth';
 
 export const operationSpecificFields = [
-	// video operations
 	...createAvatarVideoDescription,
 	...createTemplateVideoDescription,
-	...createVideoAgentDescription,
 	...translateVideoDescription,
 	...getVideoStatus,
+	...videosV3Description,
 
-	//common operations
+	...sharedListPaginationDescription,
 	...getAvatarsList,
 	...getAvatarsGroupsList,
 	...getVoicesList,
+	...videoAgentStylesFilterDescription,
+	...voiceActionsDescription,
+
+	...avatarCreateDescription,
+	...videoAgentDescription,
+
+	...lipsyncDescription,
+
 	...uploadAssets,
-	
-	//oauth operations
 	...registerOAuthClientDescription,
-	//...checkStatusDescription,
 ];

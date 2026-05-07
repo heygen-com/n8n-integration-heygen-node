@@ -4,6 +4,7 @@ import type { IDataObject } from 'n8n-workflow';
 import { heyGenApiRequest } from '../../shared/shared_functions';
 import { HEYGEN_TEMPLATE_LIST_AND_GENERATE_API_VERSION } from '../../shared/heygen_template_api_version';
 import { buildCreateAvatarVideoV3Body, buildTranslateVideoV3Body } from '../../shared/heygen_v3_video_body';
+import { buildPostV3VideosBody } from '../../shared/build_post_v3_video_body';
 
 export async function createAvatarVideoApi(
 	this: IExecuteFunctions,
@@ -92,50 +93,45 @@ export async function getVideoStatusApi(
 	return await heyGenApiRequest.call(this, 'GET', `/videos/${encodeURIComponent(videoId)}`, {}, {}, {}, 'api', 'v3');
 }
 
-export async function createVideoAgentApi(
-	this: IExecuteFunctions,
-	i: number,
-): Promise<IDataObject> {
-	const prompt = this.getNodeParameter('prompt', i) as string;
-	
-	if (!prompt || prompt.length === 0) {
-		throw new NodeOperationError(this.getNode(), 'Prompt is required and must be between 1-10000 characters.');
-	}
-	
-	if (prompt.length > 10000) {
-		throw new NodeOperationError(this.getNode(), 'Prompt must be between 1-10000 characters.');
-	}
-
-	const body: IDataObject = { prompt };
-
-	const configParam = this.getNodeParameter('config.configValues', i, {}) as IDataObject | undefined;
-	if (configParam && Object.keys(configParam).length > 0) {
-		const config = configParam as IDataObject;
-
-		if (config.duration_sec) {
-			const duration = config.duration_sec as number;
-			if (duration < 5) {
-				throw new NodeOperationError(this.getNode(), 'Duration must be at least 5 seconds.');
-			}
-			body.duration_sec = duration;
-		}
-
-		if (config.orientation) {
-			body.orientation = config.orientation as string;
-		}
-
-		if (config.avatar_id) {
-			body.avatar_id = config.avatar_id as string;
-		}
-	}
-
-	return await heyGenApiRequest.call(this, 'POST', '/video-agents', body, {}, {}, 'api', 'v3');
-}
-
 export async function translateVideoApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
 	const body = buildTranslateVideoV3Body.call(this, i);
 	return await heyGenApiRequest.call(this, 'POST', '/video-translations', body, {}, {}, 'api', 'v3');
+}
+
+export async function listVideosApi(this: IExecuteFunctions, i: number): Promise<IDataObject> {
+	const qs: IDataObject = {};
+	qs.limit = this.getNodeParameter('listPageLimit', i, 20) as number;
+	const token = this.getNodeParameter('listPaginationToken', i, '') as string;
+	if (token) qs.token = token;
+	const folderId = this.getNodeParameter('videosFolderId', i, '') as string;
+	if (folderId.trim()) qs.folder_id = folderId.trim();
+	const title = this.getNodeParameter('videosTitleFilter', i, '') as string;
+	if (title) qs.title = title;
+
+	return (await heyGenApiRequest.call(this, 'GET', '/videos', {}, qs, {}, 'api', 'v3')) as IDataObject;
+}
+
+export async function deleteVideoApi(this: IExecuteFunctions, i: number): Promise<IDataObject> {
+	const videoId = this.getNodeParameter('videoId', i, '') as string;
+	if (!videoId?.trim()) {
+		throw new NodeOperationError(this.getNode(), 'Video ID is required.');
+	}
+	return (await heyGenApiRequest.call(
+		this,
+		'DELETE',
+		`/videos/${encodeURIComponent(videoId.trim())}`,
+		{},
+		{},
+		{},
+		'api',
+		'v3',
+	)) as IDataObject;
+}
+
+export async function createVideoV3Api(this: IExecuteFunctions, i: number): Promise<IDataObject> {
+	const body = buildPostV3VideosBody.call(this, i);
+	return (await heyGenApiRequest.call(this, 'POST', '/videos', body, {}, {}, 'api', 'v3')) as IDataObject;
 }

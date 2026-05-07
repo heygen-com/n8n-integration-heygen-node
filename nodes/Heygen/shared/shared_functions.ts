@@ -65,8 +65,11 @@ export async function heyGenApiRequest(
         requestOptions.body = options.binaryData;
         requestOptions.json = false; // Ensure JSON is disabled
 
+    } else if (method === 'GET' || method === 'DELETE') {
+        // Avoid sending a JSON body on GET/DELETE (HeyGen v3 expects query/path only)
+        requestOptions.body = undefined;
+        requestOptions.json = false;
     } else {
-        // For JSON requests
         requestOptions.body = body;
         requestOptions.json = true;
     }
@@ -87,7 +90,25 @@ export async function heyGenApiRequest(
         
         return response;
     } catch (error) {
-        
+        const url = String(requestOptions.url ?? '');
+        const raw = error as JsonObject & { cause?: { code?: string }; code?: string };
+        const msg = String(raw?.message ?? error ?? '');
+        const causeCode = raw?.cause?.code ?? raw?.code;
+        const isConnRefused =
+            causeCode === 'ECONNREFUSED' ||
+            msg.includes('ECONNREFUSED') ||
+            msg.includes('refused the connection');
+
+        if (isConnRefused) {
+            throw new NodeApiError(this.getNode(), error as JsonObject, {
+                message:
+                    `Cannot reach HeyGen (${method} ${url}). Connection refused at the network level — ` +
+                    'the HeyGen API is probably blocked or unreachable from this host (firewall, VPN, Docker network, or broken IPv6). ' +
+                    'Try from this machine: `curl -sS -o /dev/null -w "%{http_code}" https://api.heygen.com/v3/users/me`. ' +
+                    'If curl fails similarly, try `NODE_OPTIONS=--dns-result-order=ipv4first n8n start` to prefer IPv4.',
+            });
+        }
+
         throw new NodeApiError(this.getNode(), error as JsonObject);
     }
 }
