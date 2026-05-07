@@ -7,19 +7,35 @@ export async function getAvatarsListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-	// v3: list avatar looks (IDs map to avatar_id on POST /v3/videos)
-	return await heyGenApiRequest.call(this, 'GET', '/avatars/looks', {}, { limit: 50 }, {}, 'api', 'v3');
+	const qs: IDataObject = {};
+	const groupId = this.getNodeParameter('avatarLooksGroupId', i, '') as string;
+	if (groupId.trim()) qs.group_id = groupId.trim();
+
+	const avatarType = this.getNodeParameter('avatarLooksAvatarType', i, 'any') as string;
+	if (avatarType !== 'any') qs.avatar_type = avatarType;
+
+	const ownership = this.getNodeParameter('avatarLooksOwnership', i, 'any') as string;
+	if (ownership !== 'any') qs.ownership = ownership;
+
+	qs.limit = this.getNodeParameter('listPageLimit', i, 20) as number;
+	const token = this.getNodeParameter('listPaginationToken', i, '') as string;
+	if (token) qs.token = token;
+
+	return await heyGenApiRequest.call(this, 'GET', '/avatars/looks', {}, qs, {}, 'api', 'v3');
 }
 
 export async function getAvatarsGroupsListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-	const includePublic = this.getNodeParameter('includePublic', i, false) as boolean;
-	const qs: IDataObject = { limit: 50 };
-	if (includePublic) {
-		qs.ownership = 'public';
-	}
+	const qs: IDataObject = {};
+	const ownership = this.getNodeParameter('avatarGroupsOwnership', i, 'any') as string;
+	if (ownership !== 'any') qs.ownership = ownership;
+
+	qs.limit = this.getNodeParameter('listPageLimit', i, 20) as number;
+	const token = this.getNodeParameter('listPaginationToken', i, '') as string;
+	if (token) qs.token = token;
+
 	return await heyGenApiRequest.call(this, 'GET', '/avatars', {}, qs, {}, 'api', 'v3');
 }
 
@@ -27,16 +43,29 @@ export async function getVoiceListApi(
 	this: IExecuteFunctions,
 	i: number,
 ): Promise<IDataObject> {
-	return await heyGenApiRequest.call(
-		this,
-		'GET',
-		'/voices',
-		{},
-		{ type: 'public', limit: 100 },
-		{},
-		'api',
-		'v3',
-	);
+	const qs: IDataObject = {};
+	const voiceLibraryType = this.getNodeParameter('voiceLibraryType', i, 'public') as string;
+	qs.type = voiceLibraryType;
+
+	const engineFilter = this.getNodeParameter('engineFilter', i, 'starfish') as string;
+	if (engineFilter === 'starfish') {
+		qs.engine = 'starfish';
+	} else if (engineFilter === 'custom') {
+		const custom = this.getNodeParameter('engineCustom', i, '') as string;
+		if (custom.trim()) qs.engine = custom.trim();
+	}
+
+	const language = this.getNodeParameter('voiceLanguage', i, '') as string;
+	if (language) qs.language = language;
+
+	const gender = this.getNodeParameter('voiceGender', i, '') as string;
+	if (gender) qs.gender = gender;
+
+	qs.limit = this.getNodeParameter('listPageLimit', i, 20) as number;
+	const token = this.getNodeParameter('listPaginationToken', i, '') as string;
+	if (token) qs.token = token;
+
+	return await heyGenApiRequest.call(this, 'GET', '/voices', {}, qs, {}, 'api', 'v3');
 }
 
 

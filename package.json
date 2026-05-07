@@ -20,6 +20,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "n8n:local": "bash scripts/n8n-start-local.sh",
     "build": "npx rimraf dist && tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
