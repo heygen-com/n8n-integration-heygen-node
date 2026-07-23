@@ -5,7 +5,7 @@ import type {
 	INodeTypeDescription,
 } from 'n8n-workflow';
 
-import { IDataObject, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { IDataObject, NodeConnectionType, NodeOperationError } from 'n8n-workflow';
 
 import { heygenResource, heygenOperations } from './operations/operations_list';
 import { operationSpecificFields } from './operations';
@@ -54,8 +54,8 @@ export class HeygenNode implements INodeType {
 		defaults: {
 			name: 'HeyGen',
 		},
-		inputs: [NodeConnectionTypes.Main],
-		outputs: [NodeConnectionTypes.Main],
+		inputs: [NodeConnectionType.Main],
+		outputs: [NodeConnectionType.Main],
 		usableAsTool: true,
 
 		credentials: [
