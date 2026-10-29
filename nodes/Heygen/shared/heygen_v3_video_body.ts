@@ -9,9 +9,8 @@ export function buildCreateAvatarVideoV3Body(
 	this: IExecuteFunctions,
 	i: number,
 ): IDataObject {
+	// v3 rejects fields it doesn't define, `test` included.
 	const body: IDataObject = {};
-
-	body.test = this.getNodeParameter('additionalFields.test', i, false) as boolean;
 
 	const optionalFields = ['title', 'callbackId', 'callbackUrl', 'folderId'];
 	for (const field of optionalFields) {
@@ -83,7 +82,8 @@ export function buildCreateAvatarVideoV3Body(
 
 	const caption = this.getNodeParameter('caption', i) as boolean;
 	if (caption) {
-		body.enable_caption = true;
+		// Burns captions into the video; the subtitle file is always returned.
+		body.caption = { style: 'default' };
 	}
 
 	return body;

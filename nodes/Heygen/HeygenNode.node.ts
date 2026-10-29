@@ -49,7 +49,9 @@ export class HeygenNode implements INodeType {
 		name: 'heygenNode',
 		icon: 'file:heygen.svg',
 		group: ['ai', 'contentCreation'] as unknown as INodeTypeDescription['group'],
-		version: 1,
+		// 1.1: requests go to the credential's base URL instead of a hardcoded host
+		version: [1, 1.1],
+		defaultVersion: 1.1,
 		description: 'HeyGen community node — videos, voices, avatars, video agent, lipsync, assets',
 		defaults: {
 			name: 'HeyGen',

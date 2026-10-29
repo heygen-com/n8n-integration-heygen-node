@@ -12,6 +12,14 @@ import {
 
 type AuthenticationType = 'apiKey' | 'oAuth2';
 
+const DEFAULT_API_BASE_URL = 'https://api.heygen.com';
+
+/** API key credentials carry their own base URL (e.g. n8n Connect); OAuth2 always uses the default host. */
+function getApiBaseUrl(credentialType: string, credentials: IDataObject): string {
+	if (credentialType !== 'heyGenApi') return DEFAULT_API_BASE_URL;
+	return ((credentials.baseUrl as string) || DEFAULT_API_BASE_URL).replace(/\/+$/, '');
+}
+
 export async function heyGenApiRequest(
     this: IHookFunctions | IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions,
     method: IHttpRequestMethods,
@@ -48,7 +56,10 @@ export async function heyGenApiRequest(
         headers: {},
         method,
         qs,
-        url: `https://${baseUrl}.heygen.com/${apiVersion}${endpoint}`,
+        url:
+            baseUrl === 'api'
+                ? `${getApiBaseUrl(credentialType, credentials)}/${apiVersion}${endpoint}`
+                : `https://${baseUrl}.heygen.com/${apiVersion}${endpoint}`,
         json: false, // Default to false
     };
 
@@ -165,7 +176,7 @@ export async function heyGenApiUploadAssetV3(
 	try {
 		const response = await this.helpers.httpRequest({
 			method: 'POST',
-			url: 'https://api.heygen.com/v3/assets',
+			url: `${getApiBaseUrl(credentialType, credentials)}/v3/assets`,
 			headers,
 			body: form,
 		});

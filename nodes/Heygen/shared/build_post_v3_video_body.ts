@@ -18,10 +18,10 @@ export function buildPostV3VideosBody(this: IExecuteFunctions, i: number): IData
 		return parsed as IDataObject;
 	}
 
+	// v3 rejects fields it doesn't define, `test` included.
 	const body: IDataObject = {};
 
 	const additional = this.getNodeParameter('videosAdditionalFields', i, {}) as IDataObject;
-	body.test = (additional.test as boolean) ?? false;
 
 	const optionalFields = ['title', 'callbackId', 'callbackUrl', 'folderId'] as const;
 	for (const field of optionalFields) {
@@ -50,7 +50,7 @@ export function buildPostV3VideosBody(this: IExecuteFunctions, i: number): IData
 		if (!imageUrl?.trim()) {
 			throw new NodeOperationError(this.getNode(), 'Image URL is required when Visual Source is Image URL.');
 		}
-		body.image_url = imageUrl.trim();
+		body.image = { type: 'url', url: imageUrl.trim() };
 	} else if (visualSource === 'imageAssetId') {
 		if (!imageAssetId?.trim()) {
 			throw new NodeOperationError(
@@ -58,13 +58,14 @@ export function buildPostV3VideosBody(this: IExecuteFunctions, i: number): IData
 				'Image Asset ID is required when Visual Source is Image Asset ID.',
 			);
 		}
-		body.image_asset_id = imageAssetId.trim();
+		body.image = { type: 'asset_id', asset_id: imageAssetId.trim() };
 	} else {
 		throw new NodeOperationError(this.getNode(), 'Select a valid Visual Source.');
 	}
 
+	// An image source is always an `image` video; v3 has no image fields on `avatar`.
 	const videoType = this.getNodeParameter('videosVideoType', i, 'avatar') as string;
-	body.type = videoType || 'avatar';
+	body.type = visualSource === 'avatarId' ? videoType || 'avatar' : 'image';
 
 	const voiceMode = this.getNodeParameter('videosVoiceMode', i, 'text') as string;
 	if (voiceMode === 'text') {
@@ -98,7 +99,7 @@ export function buildPostV3VideosBody(this: IExecuteFunctions, i: number): IData
 	}
 
 	if (this.getNodeParameter('videosCaption', i, false) as boolean) {
-		body.enable_caption = true;
+		body.caption = { style: 'default' };
 	}
 
 	return body;

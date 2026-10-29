@@ -19,6 +19,12 @@ export class HeyGenApi implements ICredentialType {
 			default: '',
 			required: true,
 		},
+		{
+			displayName: 'Base URL',
+			name: 'baseUrl',
+			type: 'hidden',
+			default: 'https://api.heygen.com',
+		},
 	];
 
 	authenticate: IAuthenticateGeneric = {
@@ -32,7 +38,7 @@ export class HeyGenApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://api.heygen.com',
+			baseURL: '={{$credentials.baseUrl}}',
 			url: '/v3/users/me',
 			method: 'GET',
 		},
